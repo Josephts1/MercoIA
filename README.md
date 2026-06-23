@@ -61,3 +61,33 @@ MercoIA/
 ```
 
 ---
+
+---
+
+## ⚙️ Instalación
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/Josephts1/MercoIA.git
+cd MercoIA
+
+# 2. Crear entorno virtual (recomendado)
+python -m venv venv
+source venv/bin/activate   # Linux/Mac
+# venv\Scripts\activate   # Windows
+
+# 3. Instalar dependencias
+pip install torch torchvision opencv-python matplotlib scikit-learn ultralytics
+```
+
+---
+
+
+### Pipeline completo (STSIVA 2026)
+
+```python
+# Ejecuta el pipeline principal: segmentación + clasificación + estimación de madurez
+python STSIVA/main.py
+```
+
+---
