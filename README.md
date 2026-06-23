@@ -18,6 +18,7 @@ El problema que motiva este trabajo es concreto: las enfermedades fúngicas en e
 
 
 ## 🍍🫐🍌 Clases de diagnóstico
+El módulo distingue **9 clases** distribuidas en tres cultivos. Las enfermedades seleccionadas corresponden a las de mayor incidencia en la región según revisión bibliográfica y consulta con técnicos locales:
 
 | # | Cultivo | Clase | Descripción |
 |---|---------|-------|-------------|
@@ -31,8 +32,7 @@ El problema que motiva este trabajo es concreto: las enfermedades fúngicas en e
 | 8 | 🍌 Banano | `banano_racimo_enfe_1` | Enfermedad tipo 1 en racimo |
 | 9 | 🍌 Banano | `banano_racimo_enfe_2` | Enfermedad tipo 2 en racimo |
 
----
-
+> **Nota sobre los bananos:** Las enfermedades de banano (clases 8 y 9) están aún en proceso de caracterización taxonómica con apoyo de especialistas. Los nombres definitivos se actualizarán en versiones futuras del dataset.
 ---
 
 ## 🗂️ Estructura del repositorio
@@ -55,7 +55,7 @@ MercoIA/
 │
 ├── 📁 network/                       # Arquitectura y pesos del modelo
 │   ├── First_try_network.py          # Primera iteración de la red neuronal
-│   └── mejor_modelo.pth              # ✅ Mejor modelo entrenado (checkpoint)
+│   └── mejor_modelo.pth              # Mejor modelo entrenado (checkpoint)
 │
 ├── 📁 images/                        # Recursos gráficos
 │   └── pipeline.png                  # Diagrama general del pipeline
@@ -64,6 +64,32 @@ MercoIA/
 ```
 
 ---
+## 🔬 ¿Cómo funciona el sistema?
+
+El pipeline está diseñado en tres etapas independientes que se encadenan:
+
+### Etapa 1 — Construcción del dataset
+
+Las imágenes de campo llegan en bruto (fotos de celular con múltiples frutos por encuadre, fondos ruidosos, variaciones de iluminación). El primer reto es construir un dataset limpio y equilibrado. Para esto, cada script de detección (`detecti_filter_*.py`) aplica **cuatro filtros en cascada** sobre los recortes generados por SAM3:
+
+| Filtro | Criterio | Motivo de descarte |
+|--------|----------|--------------------|
+| **Forma** | Relación largo/ancho ≤ 1.6 | Elimina ramas, hojas y objetos alargados que SAM3 confunde con frutos |
+| **Tamaño** | Lado mínimo ≥ 120 px | Descarta frutos muy lejanos o parcialmente visibles |
+| **Oclusión** | Fondo blanco < 50–58% del recorte | Filtra frutos tapados por otros o mal segmentados |
+| **Nitidez** | Ratio de energías Sobel ≥ 0.3 | Rechaza imágenes borrosas (mano temblorosa, movimiento del fruto) |
+
+Los recortes descartados se guardan en una carpeta separada para revisión manual, lo que permite refinar los umbrales iterativamente.
+
+### Etapa 2 — Entrenamiento del clasificador
+
+Se utiliza **EfficientNet-B0** preentrenado en ImageNet. La decisión de usar esta arquitectura responde a tres factores: (1) su tamaño reducido la hace ejecutable en GPUs pequeñas y futura inferencia en dispositivos móviles; (2) sus pesos preentrenados capturan texturas genéricas útiles para distinguir superficies de frutos enfermos; (3) su diseño con compound scaling la hace más precisa por parámetro que alternativas como ResNet-18.
+
+El entrenamiento incluye división por **identidad de fruto** (no por imagen), evitando que distintas fotos del mismo fruto aparezcan a la vez en train y validation —una fuga de datos frecuente en datasets de campo donde se toman varias fotos del mismo ejemplar.
+
+### Etapa 3 — Pipeline de inferencia completo
+
+El script `STSIVA/main.py` integra el sistema final: dada una imagen de entrada, SAM3 localiza y recorta cada fruto, el clasificador predice la clase, y un módulo colorimétrico adicional estima la **etapa de madurez** según la posición del color promedio del fruto respecto a tres centroides calibrados (verde, roja, morada) y un modelo de transición temporal entre etapas.
 
 ---
 
