@@ -3,8 +3,6 @@
 **MercoIA** es el módulo de clasificación de enfermedades del proyecto homónimo, desarrollado en el marco del *Proyecto de Investigación — Convenio 268-2025*. Su propósito es asistir a agricultores de la región de **Santander (Colombia)** en la identificación temprana de enfermedades en cultivos de **piña, mora y banano** a partir de fotografías tomadas con su propio celular, sin necesidad de equipos especializados ni acceso a laboratorio.
 
 El problema que motiva este trabajo es concreto: las enfermedades fúngicas en estas tres especies son una de las principales causas de pérdida poscosecha en la región, pero su diagnóstico oportuno depende de técnicos agrícolas que no siempre están disponibles a tiempo. MercoIA busca cerrar esa brecha poniendo una herramienta de diagnóstico directamente en el bolsillo del productor.
-
-> 🎯 **Objetivo central:** Democratizar el diagnóstico fitosanitario llevando inteligencia artificial a manos del pequeño productor rural, reduciendo las pérdidas de cosecha y mejorando la toma de decisiones en campo.
 ---
 
 ## ✨ Características principales
