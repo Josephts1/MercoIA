@@ -502,6 +502,4 @@ if __name__ == "__main__":
         traceback.print_exc()
         sys.stdout.flush()
         sys.exit(1)
-
-# export TELEGRAM_BOT_TOKEN="8833474182:AAEGf-dZ-CEXxyRCcM-D7o5oBkSiDFKwUp4"
 # python /home/joseph/Documents/MERCOIA/Algorithm/codes/Dataset_codes/Deteccion_y_filtrado/telegram_fruit_bot.py
