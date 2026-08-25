@@ -1,0 +1,20 @@
+{
+  "clases": [
+    "banano_fusarium",
+    "banano_racimo_sano",
+    "mora_antracnosis",
+    "mora_moho_gris",
+    "mora_sana",
+    "pina_fusariosis",
+    "pina_sana"
+  ],
+  "class_to_idx": {
+    "banano_fusarium": 0,
+    "banano_racimo_sano": 1,
+    "mora_antracnosis": 2,
+    "mora_moho_gris": 3,
+    "mora_sana": 4,
+    "pina_fusariosis": 5,
+    "pina_sana": 6
+  }
+}
